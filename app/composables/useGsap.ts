@@ -11,13 +11,14 @@ export function useGsapReveal() {
       els.forEach((el) => {
         const dir = (el as HTMLElement).dataset.reveal || 'up'
         const delay = parseFloat((el as HTMLElement).dataset.revealDelay || '0')
-        const fromVars: gsap.TweenVars = { opacity: 0, duration: 1, ease: 'power3.out', delay }
+        const fromVars: gsap.TweenVars = { opacity: 0, duration: 0.7, ease: 'power3.out', delay }
 
-        if (dir === 'up') fromVars.y = 60
-        else if (dir === 'down') fromVars.y = -60
+        if (dir === 'up') fromVars.y = 80
+        else if (dir === 'down') fromVars.y = -80
         else if (dir === 'left') fromVars.x = 80
         else if (dir === 'right') fromVars.x = -80
-        else if (dir === 'scale') fromVars.scale = 0.85
+        else if (dir === 'scale') fromVars.scale = 0.5
+        else if (dir === 'rotate') { fromVars.rotation = -10; fromVars.scale = 0.8 }
 
         gsap.from(el, fromVars)
       })

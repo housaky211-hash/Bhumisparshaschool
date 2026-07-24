@@ -6,122 +6,187 @@ useSeoMeta({
   description: 'Serie futurista — Sudana no Sekai. Buddhism meets cyberpunk.',
 })
 
+definePageMeta({
+  pageTransition: { name: 'morph-cybermanju', mode: 'out-in' },
+})
+
+const hoveredEp = ref<number | null>(null)
+
 const episodes = [
   {
     ep: '01',
     title: 'Sudana No Sekai',
     year: '2026',
     duration: '02:56',
-    description: 'Primeiro episodio — Sudana enfrenta a angustia existencial em um mundo de hologramas e algoritmos.',
+    description: 'Sudana enfrenta a angustia existencial em um mundo de hologramas e algoritmos.',
     url: 'https://www.youtube.com/watch?v=3ozwHOeaIzI',
+    quote: '"Post-death sims, cyberimmortality for old-school dreamers thrill"',
   },
 ]
 
-function handleEpHover(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  el.style.transform = 'perspective(800px) rotateX(0) rotateY(1.5deg) translateX(4px)'
-}
-
-function handleEpLeave(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  el.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateX(0)'
-}
-
 onMounted(() => {
-  gsap.from('.cybermanju-content > *', {
-    y: 50,
+  gsap.from('.cyber-hero > *', {
+    y: 60,
     opacity: 0,
-    duration: 1,
-    stagger: 0.12,
-    ease: 'power3.out',
+    skewX: -3,
+    duration: 0.8,
+    stagger: 0.1,
+    ease: 'power4.out',
     delay: 0.2,
+  })
+
+  gsap.from('.glitch-block', {
+    scaleX: 0,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.05,
+    ease: 'power3.out',
+    delay: 0.5,
+    transformOrigin: 'left center',
+  })
+
+  gsap.from('.timeline-item', {
+    x: -60,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.15,
+    ease: 'power3.out',
+    delay: 0.8,
   })
 })
 </script>
 
 <template>
-  <div class="pt-20">
-    <section class="relative py-20 px-4 overflow-hidden tex-hex">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-lux-red/[0.025] rounded-full blur-[200px]" />
-      <div class="max-w-5xl mx-auto relative z-10">
-        <span class="lux-section-subtitle" style="color: rgba(255, 34, 68, 0.4)">Serie</span>
-        <h1 class="lux-section-title mt-4 mb-8">Cyber Manju</h1>
-        <div class="lux-divider max-w-xs mb-12" />
+  <div class="pt-20 overflow-hidden">
+    <!-- SCANLINE OVERLAY -->
+    <div class="absolute inset-0 pointer-events-none neo-scanlines z-20 opacity-30" />
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start cybermanju-content">
-          <div>
-            <p class="font-grotesk text-lg text-amoled-light/50 leading-relaxed mb-6">
-              "In a hypothetical future, young cyberpunk wonders deep,<br />
-              What's wrong with this life? Existential anguish, can't sleep."
-            </p>
-            <p class="font-rajdhani text-amoled-dim/45 leading-relaxed mb-6">
-              CYBER MANJU e uma serie audiovisual que entrelaca o Gandavyuha Sutra — a jornada de Sudana
-              em busca da sabedoria — com um futuro cyberpunk onde telas, algoritmos e simulacoes
-              pos-morte dominam a existencia.
-            </p>
-            <p class="font-rajdhani text-amoled-dim/45 leading-relaxed mb-8 font-mono text-xs leading-relaxed">
-              "Post-death sims, cyberimmortality for old-school dreamers' thrill,
-              But he ain't hyped: stats of likely moves equal real human feel? Chill.
-              Top of the buildin', city buzz below, no words, just a gaze and grin..."
-            </p>
+    <!-- CINEMATIC HERO -->
+    <section class="relative min-h-[80vh] flex items-center overflow-hidden">
+      <!-- Glitch background blocks -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="glitch-block absolute top-[15%] left-0 w-full h-px bg-neo-red/20" />
+        <div class="glitch-block absolute top-[30%] left-0 w-[60%] h-px bg-neo-red/10" />
+        <div class="glitch-block absolute top-[45%] left-[10%] w-[80%] h-px bg-neo-cyan/10" />
+        <div class="glitch-block absolute top-[60%] left-0 w-[40%] h-px bg-neo-red/15" />
+        <div class="glitch-block absolute top-[75%] left-[20%] w-[70%] h-px bg-neo-cyan/10" />
+        <div class="glitch-block absolute top-[90%] left-0 w-[50%] h-px bg-neo-red/10" />
 
-            <div class="flex flex-wrap gap-4">
-              <a
-                href="https://www.youtube.com/watch?v=3ozwHOeaIzI"
-                target="_blank"
-                rel="noopener"
-                class="lux-btn"
-              >
-                <Icon name="heroicons:play" class="w-4 h-4" />
-                Assistir Episodio
-              </a>
-            </div>
+        <div class="absolute top-[10%] right-[5%] w-48 h-48 border-4 border-neo-red/10 neo-clip-diamond animate-spin-slower" />
+        <div class="absolute bottom-[20%] left-[3%] w-32 h-32 border-4 border-neo-red/15 animate-drift" />
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10 cyber-hero">
+        <div>
+          <div class="flex items-center gap-4 mb-4">
+            <div class="h-1 w-16 bg-neo-red" />
+            <span class="neo-subtitle" style="color: #ef4444">Serie Audiovisual</span>
+          </div>
+          <h1 class="neo-title-red mb-2 neo-glitch-text" data-text="CYBER MANJU">CYBER MANJU</h1>
+          <div class="neo-divider-red max-w-[200px] mb-6" />
+
+          <div class="inline-block bg-neo-red/10 border border-neo-red/40 px-4 py-2 mb-6">
+            <span class="font-orbitron text-[10px] tracking-[0.4em] text-neo-red uppercase font-bold">Sudana No Sekai — Ep 01</span>
           </div>
 
-          <div class="lux-card p-0 overflow-hidden relative">
+          <p class="font-grotesk text-lg text-white/60 leading-relaxed mb-6 border-l-4 border-neo-red pl-4 italic">
+            "In a hypothetical future, young cyberpunk wonders deep,<br />
+            What's wrong with this life? Existential anguish, can't sleep.<br />
+            Screens everywhere: buildings, squares, homes, glasses on your face,<br />
+            Holograms in the air, algorithms predictin' every trace."
+          </p>
+
+          <p class="font-rajdhani text-white/40 leading-relaxed mb-8">
+            CYBER MANJU entrelaca o Gandavyuha Sutra — a jornada de Sudana — com um futuro cyberpunk
+            onde telas, algoritmos e simulacoes pos-morte dominam a existencia.
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <a href="https://www.youtube.com/watch?v=3ozwHOeaIzI" target="_blank" rel="noopener" class="neo-btn-red">
+              <Icon name="heroicons:play" class="w-4 h-4" />
+              Assistir Agora
+            </a>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="aspect-square border-4 border-neo-red overflow-hidden relative neo-glow-red">
             <NuxtImg
               src="/images/project-main.png"
               alt="Cyber Manju"
               width="600"
               height="600"
-              class="w-full aspect-square object-cover"
-              loading="lazy"
+              class="w-full h-full object-cover"
+              loading="eager"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-amoled-black/95 via-transparent to-lux-red/5" />
-            <div class="absolute bottom-4 left-4 right-4">
-              <span class="font-orbitron text-[9px] tracking-[0.3em] text-lux-red/50">EP 01 — 2026</span>
-            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-neo-black via-neo-black/20 to-transparent" />
+            <!-- Neon corner brackets -->
+            <div class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-neo-red" />
+            <div class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-neo-red" />
+            <div class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-neo-red" />
+            <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-neo-red" />
           </div>
+          <div class="absolute -bottom-4 -right-4 w-24 h-24 border-4 border-neo-red/30 animate-pulse-border" />
+          <div class="absolute -top-4 -left-4 w-16 h-16 border-4 border-neo-red animate-pulse-border" style="animation-delay: 1s" />
         </div>
       </div>
     </section>
 
-    <section class="py-16 px-4 tex-diagonal">
+    <!-- EPISODES TIMELINE -->
+    <section class="py-20 px-4 border-y-4 border-neo-red">
       <div class="max-w-5xl mx-auto">
-        <h2 class="font-orbitron text-sm tracking-[0.3em] text-lux-red/50 mb-8 uppercase">Episodios</h2>
-        <div class="space-y-4">
-          <a
-            v-for="ep in episodes"
+        <div class="mb-12">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="h-1 w-16 bg-neo-red" />
+            <span class="neo-subtitle" style="color: #ef4444">Episodios</span>
+          </div>
+          <h2 class="neo-title-red mb-4">Timeline</h2>
+          <div class="neo-divider-red max-w-[200px] mt-4" />
+        </div>
+
+        <div class="relative">
+          <!-- timeline line -->
+          <div class="absolute left-[29px] top-0 bottom-0 w-px bg-neo-red/30" />
+
+          <div
+            v-for="(ep, i) in episodes"
             :key="ep.ep"
-            :href="ep.url"
-            target="_blank"
-            rel="noopener"
-            class="lux-card p-6 flex items-start gap-6 group cursor-pointer transition-all duration-300"
-            @mousemove="handleEpHover"
-            @mouseleave="handleEpLeave"
+            class="timeline-item relative pl-20 pb-12 group"
+            @mouseenter="hoveredEp = i"
+            @mouseleave="hoveredEp = null"
           >
-            <div class="w-14 h-14 flex items-center justify-center bg-lux-red/10 border border-lux-red/15 font-orbitron text-xl text-lux-red/60 flex-shrink-0 clip-lux-sm">
-              {{ ep.ep }}
+            <!-- timeline dot -->
+            <div class="absolute left-5 top-2 w-6 h-6 border-2 border-neo-red flex items-center justify-center transition-all duration-300"
+              :class="hoveredEp === i ? 'bg-neo-red scale-125' : ''">
+              <div class="w-2 h-2 bg-neo-red transition-all duration-300" :class="hoveredEp === i ? 'bg-neo-black' : ''" />
             </div>
-            <div class="flex-1">
-              <h3 class="font-orbitron text-xs tracking-[0.15em] text-amoled-light/70 group-hover:text-amoled-white transition-colors duration-300">
-                {{ ep.title }}
-              </h3>
-              <span class="font-orbitron text-[9px] text-lux-red/35 tracking-[0.15em]">{{ ep.year }} · {{ ep.duration }}</span>
-              <p class="font-rajdhani text-sm text-amoled-dim/45 mt-2">{{ ep.description }}</p>
-            </div>
-            <Icon name="heroicons:play-circle" class="w-7 h-7 text-lux-red/30 group-hover:text-lux-red/60 transition-colors duration-300 flex-shrink-0 mt-1" />
-          </a>
+
+            <a :href="ep.url" target="_blank" rel="noopener" class="block border-2 border-neo-red/40 p-6 transition-all duration-300 hover:border-neo-red hover:bg-neo-red/5 relative overflow-hidden"
+              :style="hoveredEp === i ? 'box-shadow: 6px 6px 0px 0px #ef4444' : ''">
+              <!-- glitch line on hover -->
+              <div class="absolute top-0 left-0 h-px bg-neo-red transition-all duration-500"
+                :class="hoveredEp === i ? 'w-full' : 'w-0'" />
+
+              <div class="flex items-start gap-6">
+                <div class="w-14 h-14 flex items-center justify-center border-2 border-neo-red font-orbitron text-xl text-neo-red flex-shrink-0 transition-all duration-300 group-hover:bg-neo-red group-hover:text-neo-black neo-clip-sm">
+                  {{ ep.ep }}
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-orbitron text-sm tracking-[0.15em] text-neo-white mb-1 uppercase font-bold transition-colors duration-200 group-hover:text-neo-red">
+                    {{ ep.title }}
+                  </h3>
+                  <div class="flex items-center gap-3 mb-3">
+                    <span class="font-orbitron text-[9px] text-neo-red tracking-[0.15em] uppercase font-bold">{{ ep.year }}</span>
+                    <span class="w-1 h-1 bg-neo-red/40" />
+                    <span class="font-orbitron text-[9px] text-neo-red/60 tracking-[0.15em] uppercase font-bold">{{ ep.duration }}</span>
+                  </div>
+                  <p class="font-rajdhani text-sm text-white/40 mb-3">{{ ep.description }}</p>
+                  <p class="font-grotesk text-xs text-neo-red/60 italic">{{ ep.quote }}</p>
+                </div>
+                <Icon name="heroicons:play-circle" class="w-8 h-8 text-neo-red/30 group-hover:text-neo-red transition-all duration-200 flex-shrink-0 group-hover:scale-110" />
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </section>

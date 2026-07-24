@@ -9,8 +9,14 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@vueuse/nuxt',
   ],
+  ssr: true,
+  nitro: {
+    output: { dir: 'dist' },
+  },
   app: {
     baseURL: '/Bhumisparshaschool/',
+    pageTransition: { name: 'morph', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       title: 'Bhumisparsha School | Cyber Dharma',
       htmlAttrs: { lang: 'pt-BR' },
@@ -20,9 +26,9 @@ export default defineNuxtConfig({
         {
           name: 'description',
           content:
-            'Bhumisparsha School — Arte, Dharma, Meio Ambiente e Tecnologia no Cyberpunk Mágico. Projetos: BhumiStudio Records, 7k Project, Cyber Manju, Dharma Play, Techno Sutra.',
+            'Bhumisparsha School — Arte, Dharma, Meio Ambiente e Tecnologia no Cyberpunk Magico.',
         },
-        { name: 'theme-color', content: '#0a0a1a' },
+        { name: 'theme-color', content: '#000000' },
         { property: 'og:title', content: 'Bhumisparsha School | Cyber Dharma' },
         {
           property: 'og:description',

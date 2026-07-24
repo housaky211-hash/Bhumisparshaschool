@@ -22,20 +22,21 @@ const scrollToTop = () => {
 
 <template>
   <Transition
-    enter-active-class="transition duration-300 ease-out"
-    enter-from-class="opacity-0 translate-y-3 scale-90"
+    enter-active-class="transition duration-200 ease-out"
+    enter-from-class="opacity-0 translate-y-4 scale-75"
     enter-to-class="opacity-100 translate-y-0 scale-100"
-    leave-active-class="transition duration-300 ease-in"
+    leave-active-class="transition duration-150 ease-in"
     leave-from-class="opacity-100 translate-y-0 scale-100"
-    leave-to-class="opacity-0 translate-y-3 scale-90"
+    leave-to-class="opacity-0 translate-y-4 scale-75"
   >
     <button
       v-if="show"
-      class="fixed bottom-8 right-8 z-50 w-11 h-11 flex items-center justify-center bg-amoled-panel/90 border border-lux-purple/20 hover:border-lux-purple/50 text-amoled-dim/50 hover:text-lux-purple transition-all duration-300 rounded-full backdrop-blur-xl hover:shadow-[0_0_25px_rgba(155,89,255,0.2)]"
+      class="fixed bottom-8 right-8 z-50 w-12 h-12 flex items-center justify-center bg-neo-purple border-3 border-neo-white text-neo-black hover:translate-y--1 hover:translate-x--1 transition-all duration-150 hover:shadow-[4px_4px_0px_0px_#ef4444] font-bold"
+      style="box-shadow: 4px 4px 0px 0px #ffffff"
       aria-label="Voltar ao topo"
       @click="scrollToTop"
     >
-      <Icon name="heroicons:chevron-up" class="w-4 h-4" />
+      <Icon name="heroicons:chevron-up" class="w-5 h-5" />
     </button>
   </Transition>
 </template>

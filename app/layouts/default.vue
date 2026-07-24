@@ -1,7 +1,6 @@
 <template>
-  <div class="relative min-h-screen bg-amoled-black">
-    <CyberParticles />
-    <ScanLine />
+  <div class="relative min-h-screen bg-neo-black neo-noise">
+    <PsychedelicLines />
     <AppHeader />
     <main>
       <slot />

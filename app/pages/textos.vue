@@ -6,134 +6,207 @@ useSeoMeta({
   description: 'Textos budistas traduzidos para PT-BR — Arya Tara, Manjushri, Sutras e Ensinamentos.',
 })
 
+definePageMeta({
+  pageTransition: { name: 'morph-textos', mode: 'out-in' },
+})
+
 interface TextCategory {
   title: string
   subtitle: string
   icon: string
   accent: string
-  tex: string
-  items: string[]
+  items: { title: string; desc: string }[]
+}
+
+const openAccordion = ref<number | null>(null)
+
+function toggleAccordion(i: number) {
+  openAccordion.value = openAccordion.value === i ? null : i
 }
 
 const categories: TextCategory[] = [
   {
     title: 'Arya Tara',
-    subtitle: 'A Nobre Dama',
+    subtitle: 'A Nobre Dama — Protetora e Guiia',
     icon: 'heroicons:star',
-    accent: 'lux-purple',
-    tex: 'tex-diamond',
-    items: ['Arya Tara — A Nobre Dama', 'Traducao e Comentarios'],
+    accent: 'purple',
+    items: [
+      { title: 'Arya Tara — A Nobre Dama', desc: 'Traducao completa com comentarios e contexto historico.' },
+      { title: 'As 21 Taras', desc: 'Invocacoes e significados das 21 formas de Tara.' },
+    ],
   },
   {
     title: 'Manjushri',
-    subtitle: 'Tudo sobre o jovial...',
+    subtitle: 'Bodhisattva da Sabedoria',
     icon: 'heroicons:bolt',
-    accent: 'lux-red',
-    tex: 'tex-hex',
-    items: ['Manjushri — O Bodhisattva da Sabedoria', 'Ensinamentos sobre Manjushri'],
+    accent: 'red',
+    items: [
+      { title: 'Manjushri — O Bodhisattva da Sabedoria', desc: 'A lenda e os ensinamentos sobre a espada da discriminacao.' },
+      { title: 'Sutras de Manjushri', desc: 'Textos canonicos dedicados ao jovial Bodhisattva.' },
+    ],
   },
   {
     title: 'Ensinamentos',
-    subtitle: 'Transcricoes de...',
+    subtitle: 'Transcricoes de Mestres',
     icon: 'heroicons:microphone',
-    accent: 'lux-purple',
-    tex: 'tex-dots',
-    items: ['Transcricoes de Ensinamentos', 'Dzongsar Khyentse Rinpoche'],
+    accent: 'purple',
+    items: [
+      { title: 'Dzongsar Khyentse Rinpoche', desc: 'Transcricoes e traducoes dos ensinamentos ao vivo.' },
+      { title: 'Outros Mestres', desc: 'Ensinamentos de various tradicoes budistas.' },
+    ],
   },
   {
     title: 'Sutras',
-    subtitle: 'Assim eu ouvi...',
+    subtitle: 'Assim Eu Ouvi...',
     icon: 'heroicons:book-open',
-    accent: 'lux-green',
-    tex: 'tex-waves',
-    items: ['Gandavyuha Sutra', 'Outros Sutras Traduzidos'],
+    accent: 'green',
+    items: [
+      { title: 'Gandavyuha Sutra', desc: 'A jornada de Sudana em busca da sabedoria suprema.' },
+      { title: 'Heart Sutra', desc: 'O coracao da sabedoria transcendental.' },
+    ],
   },
   {
-    title: 'Outros Textos',
-    subtitle: 'Outros textos...',
+    title: 'Reflexoes',
+    subtitle: 'Textos e Comentarios',
     icon: 'heroicons:document-text',
-    accent: 'lux-red',
-    tex: 'tex-diagonal',
-    items: ['Textos Diversos', 'Reflexoes e Traducoes'],
+    accent: 'yellow',
+    items: [
+      { title: 'Textos Diversos', desc: 'Reflexoes, ensaios e traducoes livres.' },
+      { title: 'Comentarios', desc: 'Notas e interpretacoes pessoais.' },
+    ],
   },
 ]
 
-function handleCardHover(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  const rect = el.getBoundingClientRect()
-  const x = ((e.clientX - rect.left) / rect.width) * 100
-  const y = ((e.clientY - rect.top) / rect.height) * 100
-  el.style.setProperty('--mouse-x', `${x}%`)
-  el.style.setProperty('--mouse-y', `${y}%`)
-  el.style.transform = `perspective(800px) rotateX(${(y - 50) * -0.03}deg) rotateY(${(x - 50) * 0.03}deg) translateY(-2px)`
-}
-
-function handleCardLeave(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  el.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)'
-}
-
 onMounted(() => {
-  gsap.from('.textos-content > *', {
-    y: 50,
+  gsap.from('.textos-hero > *', {
+    y: 60,
     opacity: 0,
-    duration: 1,
-    stagger: 0.12,
-    ease: 'power3.out',
+    scale: 0.95,
+    duration: 0.8,
+    stagger: 0.1,
+    ease: 'power4.out',
     delay: 0.2,
+  })
+
+  gsap.from('.accordion-item', {
+    y: 30,
+    opacity: 0,
+    duration: 0.5,
+    stagger: 0.08,
+    ease: 'power3.out',
+    delay: 0.6,
   })
 })
 </script>
 
 <template>
-  <div class="pt-20">
-    <section class="relative py-20 px-4 overflow-hidden tex-velvet">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-lux-purple/[0.025] rounded-full blur-[200px]" />
-      <div class="max-w-5xl mx-auto relative z-10">
-        <span class="lux-section-subtitle">Biblioteca</span>
-        <h1 class="lux-section-title mt-4 mb-8">Textos Traduzidos</h1>
-        <div class="lux-divider max-w-xs mb-12" />
+  <div class="pt-20 overflow-hidden">
+    <!-- ZEN FLOATING ELEMENTS -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-[15%] right-[8%] w-32 h-32 border-4 border-neo-yellow/10 rotate-45 animate-float" />
+      <div class="absolute bottom-[20%] left-[5%] w-24 h-24 border-4 border-neo-yellow/10 neo-clip-diamond animate-drift" style="animation-delay: 2s" />
+      <div class="absolute top-[60%] right-[15%] w-16 h-16 border-2 border-neo-yellow/10 animate-spin-slower" />
+    </div>
 
-        <p class="font-grotesk text-lg text-amoled-light/50 leading-relaxed mb-12 max-w-3xl">
+    <!-- HERO -->
+    <section class="relative py-24 px-4">
+      <div class="max-w-5xl mx-auto relative z-10 textos-hero">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="h-1 w-16 bg-neo-yellow" />
+          <span class="neo-subtitle" style="color: #facc15">Biblioteca Sagrada</span>
+        </div>
+        <h1 class="neo-title-yellow mb-6">Textos<br /> Traduzidos</h1>
+        <div class="neo-divider-yellow max-w-[200px] mb-8" />
+
+        <p class="font-grotesk text-lg text-white/50 leading-relaxed max-w-3xl border-l-4 border-neo-yellow pl-4 mb-4">
           Traducoes para Portugues (PT-BR) de textos budistas sagrados —
-          ensinamentos, sutras, e textos de Dzongsar Khyentse Rinpoche e outros mestres.
+          ensinamentos, sutras, e textos de Dzongsar Khyentse Rinpoche.
         </p>
+        <p class="font-rajdhani text-sm text-white/30">
+          Cada categoria contem traducoes cuidadosas com comentarios e contexto.
+        </p>
+      </div>
+    </section>
 
-        <div class="space-y-5 textos-content">
+    <!-- ACCORDION CATEGORIES -->
+    <section class="pb-24 px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="space-y-4">
           <div
-            v-for="cat in categories"
+            v-for="(cat, i) in categories"
             :key="cat.title"
-            class="lux-card p-6 group relative overflow-hidden"
-            @mousemove="handleCardHover"
-            @mouseleave="handleCardLeave"
+            class="accordion-item border-2 transition-all duration-300"
+            :class="[
+              openAccordion === i
+                ? cat.accent === 'purple' ? 'border-neo-purple bg-neo-purple/5'
+                  : cat.accent === 'red' ? 'border-neo-red bg-neo-red/5'
+                  : cat.accent === 'green' ? 'border-neo-green bg-neo-green/5'
+                  : 'border-neo-yellow bg-neo-yellow/5'
+                : 'border-neo-border hover:border-neo-border/60'
+            ]"
           >
-            <div :class="cat.tex" class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div class="relative z-10 flex items-start gap-4">
+            <!-- Header -->
+            <button
+              class="w-full p-5 flex items-center gap-4 text-left cursor-pointer group"
+              @click="toggleAccordion(i)"
+            >
               <div
-                class="w-11 h-11 flex items-center justify-center clip-lux-sm flex-shrink-0 transition-all duration-300"
+                class="w-12 h-12 flex items-center justify-center border-2 flex-shrink-0 transition-all duration-300"
                 :class="[
-                  cat.accent === 'lux-purple' && 'bg-lux-purple/10 border border-lux-purple/15',
-                  cat.accent === 'lux-red' && 'bg-lux-red/10 border border-lux-red/15',
-                  cat.accent === 'lux-green' && 'bg-lux-green/10 border border-lux-green/15',
+                  cat.accent === 'purple' && 'border-neo-purple text-neo-purple',
+                  cat.accent === 'red' && 'border-neo-red text-neo-red',
+                  cat.accent === 'green' && 'border-neo-green text-neo-green',
+                  cat.accent === 'yellow' && 'border-neo-yellow text-neo-yellow',
+                  openAccordion === i ? 'rotate-12 scale-110' : '',
                 ]"
               >
-                <Icon :name="cat.icon" class="w-5 h-5" :class="[
-                  cat.accent === 'lux-purple' && 'text-lux-purple/60',
-                  cat.accent === 'lux-red' && 'text-lux-red/60',
-                  cat.accent === 'lux-green' && 'text-lux-green/60',
-                ]" />
+                <Icon :name="cat.icon" class="w-5 h-5" />
               </div>
+
               <div class="flex-1">
-                <h3 class="font-orbitron text-xs tracking-[0.15em] text-amoled-light/70 mb-1">
-                  {{ cat.title }}
-                </h3>
-                <p class="font-rajdhani text-xs text-amoled-dim/35 mb-3">{{ cat.subtitle }}</p>
-                <ul class="space-y-2">
-                  <li v-for="item in cat.items" :key="item" class="font-rajdhani text-sm text-amoled-dim/45 hover:text-amoled-light/70 transition-colors duration-300 cursor-pointer flex items-center gap-2">
-                    <div class="w-1 h-1 rounded-full bg-amoled-dim/20" />
-                    {{ item }}
-                  </li>
-                </ul>
+                <h3 class="font-orbitron text-xs tracking-[0.15em] uppercase font-bold"
+                  :class="[
+                    cat.accent === 'purple' && 'text-neo-purple',
+                    cat.accent === 'red' && 'text-neo-red',
+                    cat.accent === 'green' && 'text-neo-green',
+                    cat.accent === 'yellow' && 'text-neo-yellow',
+                  ]"
+                >{{ cat.title }}</h3>
+                <p class="font-rajdhani text-xs text-white/35 mt-0.5">{{ cat.subtitle }}</p>
+              </div>
+
+              <Icon
+                name="heroicons:chevron-down"
+                class="w-5 h-5 text-white/30 transition-transform duration-300"
+                :class="openAccordion === i ? 'rotate-180' : ''"
+              />
+            </button>
+
+            <!-- Content -->
+            <div class="neo-accordion-content" :class="openAccordion === i ? 'open' : ''">
+              <div class="px-5 pb-5 space-y-3">
+                <div
+                  v-for="item in cat.items"
+                  :key="item.title"
+                  class="p-4 border border-neo-border/30 hover:border-neo-border/60 transition-all duration-200 cursor-default group/item"
+                >
+                  <div class="flex items-start gap-3">
+                    <div class="w-2 h-2 mt-2 flex-shrink-0"
+                      :class="[
+                        cat.accent === 'purple' && 'bg-neo-purple',
+                        cat.accent === 'red' && 'bg-neo-red',
+                        cat.accent === 'green' && 'bg-neo-green',
+                        cat.accent === 'yellow' && 'bg-neo-yellow',
+                      ]"
+                    />
+                    <div>
+                      <h4 class="font-grotesk text-sm text-white/70 group-hover/item:text-white/90 transition-colors duration-200 font-bold">
+                        {{ item.title }}
+                      </h4>
+                      <p class="font-rajdhani text-xs text-white/30 mt-1">{{ item.desc }}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
