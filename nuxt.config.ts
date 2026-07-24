@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
   ],
   app: {
+    baseURL: '/Bhumisparshaschool/',
     head: {
       title: 'Bhumisparsha School | Cyber Dharma',
       htmlAttrs: { lang: 'pt-BR' },
